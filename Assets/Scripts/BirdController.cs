@@ -1,20 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class BirdController : MonoBehaviour
 {
+    public bool isDeath { get; private set; }
+
     private float _velocityPerJump = 3;
     private float _speed = 2.4f;
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
-
-        MoveBirdOnXAxis();
-        if (WasClicked || WasTouched)
-            BoostOnYAxis();
-    }
 
     private bool WasClicked
     {
@@ -29,6 +22,33 @@ public class BirdController : MonoBehaviour
     private void MoveBirdOnXAxis()
     {
         transform.position += new Vector3(Time.deltaTime * _speed, 0, 0);
+    }
+
+    void Update()
+    {
+        if (isDeath)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+
+        MoveBirdOnXAxis();
+        if (WasClicked || WasTouched)
+            BoostOnYAxis();
+    }
+
+    public void ChangeBird(string name)
+    {
+        GameObject newBird = Resources.Load<GameObject>($"Prefabs/{name}");
+        Instantiate(newBird, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
+    }
+
+    public void Death()
+    {
+        this.isDeath = true;
+
+        FindObjectOfType<GameManager>().GameOver();
     }
 
     private void BoostOnYAxis()

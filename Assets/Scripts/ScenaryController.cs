@@ -8,13 +8,14 @@ public class ScenaryController : MonoBehaviour
     private float groundHorizontalLength = 20.45f;
     private int currentIndex;
 
-    void Start()
-    {
-    }
-
     void Update()
     {
-        Vector2 birdPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        BirdController bird = GameObject.FindGameObjectWithTag("Player").GetComponent<BirdController>();
+
+        if (bird.isDeath)
+            return;
+
+        Vector2 birdPosition = bird.transform.position;
         Vector2 currentPosition = backgrounds[currentIndex].transform.position;
 
         float length = currentPosition.x + groundHorizontalLength;
