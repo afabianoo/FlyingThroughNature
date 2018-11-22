@@ -10,9 +10,7 @@ public class GameManager : MonoBehaviour
     
     public void GameOver()
     {
-        SpriteRenderer birdSprite = FindObjectOfType<BirdController>().GetComponent<SpriteRenderer>();
-        int score = FindObjectOfType<Timer>().Score;
-        FindObjectOfType<Menu>().GameOver(birdSprite, score);
+        FindObjectOfType<MenuPanel>().GameOver();
     }
 
     public void Restart()
